@@ -1,0 +1,95 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* 全局滚动条样式 — 暗色系终端风格 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #484f58;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* 等宽字体优先用于代码展示区 */
+  code, pre, .font-mono {
+    font-variant-ligatures: none;
+  }
+}
+
+@layer components {
+  /* 终端风格的输入框 */
+  .terminal-input {
+    @apply w-full bg-gray-50 dark:bg-[#161b22] border border-gray-300 dark:border-gray-700 
+           rounded-lg px-4 py-3 font-mono text-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+           placeholder-gray-400 dark:placeholder-gray-600
+           transition-colors duration-150;
+  }
+
+  .terminal-textarea {
+    @apply terminal-input resize-y min-h-[120px];
+  }
+
+  /* 输出区卡片 */
+  .output-card {
+    @apply relative bg-gray-50 dark:bg-[#161b22] border border-gray-200 dark:border-gray-800 
+           rounded-lg p-4 font-mono text-sm
+           overflow-auto;
+  }
+
+  /* 工具卡片网格项 */
+  .tool-card {
+    @apply flex items-center gap-3 p-3 rounded-lg border border-gray-200 dark:border-gray-800
+           bg-white dark:bg-[#161b22] hover:border-blue-500 dark:hover:border-blue-400
+           hover:shadow-md dark:hover:shadow-blue-500/5
+           transition-all duration-200 cursor-pointer;
+  }
+
+  /* 扫描线效果 */
+  .scan-line::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(88, 166, 255, 0.15), transparent);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Toast 动画 */
+  .toast-enter {
+    animation: toast-in 0.3s ease-out;
+  }
+  .toast-exit {
+    animation: toast-out 0.2s ease-in forwards;
+  }
+
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes toast-out {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}

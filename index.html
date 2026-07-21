@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>极客工具箱 - Geek Toolbox</title>
+    <meta name="description" content="面向技术人员的多功能在线工具集合站，纯前端计算，无广告干扰。" />
+    <!-- Anti-FOUC: 在 React 挂载前设置 dark class -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('geek-toolbox-theme');
+        var m = window.matchMedia('(prefers-color-scheme: dark)');
+        if (t === 'dark' || (t !== 'light' && m.matches)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+        if (!t) {
+          m.addEventListener('change', function(e) {
+            if (e.matches) {
+              document.documentElement.classList.add('dark');
+            } else {
+              document.documentElement.classList.remove('dark');
+            }
+          });
+        }
+      })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body class="bg-white dark:bg-[#0d1117] text-gray-900 dark:text-gray-100 transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
