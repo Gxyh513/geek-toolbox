@@ -44,29 +44,30 @@ export default function MarkdownPreviewTool() {
 
   return (
     <ToolPageLayout toolId={TOOL_ID}>
-      <div className="space-y-4 max-w-6xl">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="w-full flex-1 flex flex-col space-y-4 min-h-0">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 flex-1 min-h-[350px]">
           {/* 左侧编辑 */}
-          <div>
-            <div className="flex items-center justify-between mb-1.5">
+          <div className="flex flex-col h-full space-y-1.5">
+            <div className="flex items-center justify-between flex-shrink-0">
               <label className="text-xs text-gray-500 dark:text-gray-500">Markdown</label>
               <CopyButton value={input} label="已复制 Markdown" />
             </div>
-            <textarea className="terminal-textarea" rows={20}
+            <textarea className="terminal-textarea flex-1 w-full min-h-[280px]"
               value={input} onChange={(e) => handleChange(e.target.value)}
               placeholder="输入 Markdown 内容..." spellCheck={false} />
           </div>
 
           {/* 右侧预览 */}
-          <div>
-            <label className="block text-xs text-gray-500 dark:text-gray-500 mb-1.5">预览</label>
-            <div className="output-card min-h-[520px] max-h-[624px] overflow-y-auto prose prose-sm dark:prose-invert max-w-none">
+          <div className="flex flex-col h-full space-y-1.5">
+            <label className="block text-xs text-gray-500 dark:text-gray-500 flex-shrink-0">预览</label>
+            <div className="output-card flex-1 overflow-y-auto prose prose-sm dark:prose-invert max-w-none min-h-[280px]">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{
-                  code({ node, inline, className, children, ...props }) {
+                  code({ node, className, children, ...props }) {
                     const match = /language-(\w+)/.exec(className || '');
-                    if (inline) {
+                    const isInline = !match && (!className && !String(children).includes('\n'));
+                    if (isInline) {
                       return <code className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-xs font-mono text-pink-500" {...props}>{children}</code>;
                     }
                     return (

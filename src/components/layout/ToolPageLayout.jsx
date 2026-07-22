@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { getToolById, recordToolUsage } from '../../data/toolRegistry';
@@ -14,9 +15,11 @@ export default function ToolPageLayout({ children, toolId: forceToolId }) {
   const tool = getToolById(toolId);
 
   // 记录工具使用
-  if (tool) {
-    recordToolUsage(tool.id);
-  }
+  useEffect(() => {
+    if (tool) {
+      recordToolUsage(tool.id);
+    }
+  }, [tool?.id]);
 
   if (!tool) {
     return (
@@ -47,8 +50,8 @@ export default function ToolPageLayout({ children, toolId: forceToolId }) {
         </div>
       </div>
 
-      {/* 工具内容 */}
-      <div className="flex-1 overflow-auto p-6">
+      {/* 工具内容区域 (自适应窗口宽高) */}
+      <div className="flex-1 overflow-auto p-4 md:p-6 flex flex-col min-h-0">
         {children}
       </div>
     </div>

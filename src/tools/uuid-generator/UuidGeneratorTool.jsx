@@ -41,9 +41,9 @@ export default function UuidGeneratorTool() {
 
   return (
     <ToolPageLayout toolId={TOOL_ID}>
-      <div className="space-y-4 max-w-4xl">
+      <div className="w-full flex-1 flex flex-col space-y-4 min-h-0">
         {/* 控制栏 */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
           <div className="flex items-center gap-2">
             <label className="text-xs text-gray-500 dark:text-gray-500">生成数量</label>
             <input
@@ -75,8 +75,8 @@ export default function UuidGeneratorTool() {
         </div>
 
         {/* 结果区 */}
-        <div>
-          <div className="flex items-center justify-between mb-1.5">
+        <div className="flex-1 flex flex-col min-h-[250px]">
+          <div className="flex items-center justify-between mb-1.5 flex-shrink-0">
             <label className="text-xs text-gray-500 dark:text-gray-500">
               共 {uuids.length} 个 UUID v4
             </label>
@@ -84,13 +84,13 @@ export default function UuidGeneratorTool() {
               <CopyButton value={uuids.join('\n')} label="已复制全部 UUID" />
             </div>
           </div>
-          <div className="output-card max-h-96 overflow-y-auto">
+          <div className="output-card flex-1 overflow-y-auto min-h-[200px]">
             {uuids.map((id, idx) => (
               <div
                 key={idx}
                 className="flex items-center justify-between gap-2 py-1.5 border-b border-gray-100 dark:border-gray-800 last:border-0"
               >
-                <code className="text-sm font-mono text-gray-700 dark:text-gray-300 select-all">{id}</code>
+                <code className="text-sm font-mono text-gray-700 dark:text-gray-300">{id}</code>
                 <CopyButton value={id} label={`已复制 ${id}`} />
               </div>
             ))}

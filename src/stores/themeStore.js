@@ -1,19 +1,29 @@
 /**
- * 主题状态管理
- * theme: 'light' | 'dark' | 'system'
- * 用户手动选择后写入 localStorage
- * 未选择时始终跟随系统
+ * 易语言全能开发工具箱 — 多主题调色盘 Engine
+ * 完全适配参考项目 D:\Antigravity项目\E 的商业级 UI 风格
+ * 支持主题：system | dark | emerald | purple | amber | light
  */
 import { create } from 'zustand';
 
-const THEME_KEY = 'geek-toolbox-theme';
+const THEME_KEY = 'user-theme';
+
+export const THEME_OPTIONS = [
+  { value: 'system', label: '💻 跟随系统主题' },
+  { value: 'dark', label: '🌙 深空夜蓝 (默认玻璃)' },
+  { value: 'emerald', label: '🌲 极客翡翠 (暗黑绿晶)' },
+  { value: 'purple', label: '🍇 炫彩紫晶 (梦幻紫金)' },
+  { value: 'amber', label: '🍊 暖阳琥珀 (暖光黑金)' },
+  { value: 'light', label: '☀️ 极简纯白 (明亮白)' },
+];
 
 function getStoredTheme() {
   try {
     const t = localStorage.getItem(THEME_KEY);
-    if (t === 'light' || t === 'dark' || t === 'system') return t;
+    if (t && ['system', 'dark', 'emerald', 'purple', 'amber', 'light'].includes(t)) {
+      return t;
+    }
   } catch {}
-  return null;
+  return 'system';
 }
 
 function getSystemDark() {
@@ -21,72 +31,47 @@ function getSystemDark() {
   return window.matchMedia('(prefers-color-scheme: dark)').matches;
 }
 
-function applyTheme(theme) {
-  const isDark = theme === 'dark' || (theme === 'system' && getSystemDark());
-  document.documentElement.classList.toggle('dark', isDark);
-}
+function applyTheme(mode) {
+  const root = document.documentElement;
+  let appliedMode = mode;
 
-function getEffectiveTheme(theme) {
-  if (theme === 'system') return getSystemDark() ? 'dark' : 'light';
-  return theme;
+  if (mode === 'system') {
+    appliedMode = getSystemDark() ? 'dark' : 'light';
+  }
+
+  // 挂载 data-applied-theme 供组件与 CSS 变量响应
+  root.setAttribute('data-applied-theme', appliedMode);
+
+  // 针对 Tailwind dark 模式类名
+  const isDark = appliedMode !== 'light';
+  root.classList.toggle('dark', isDark);
 }
 
 export const useThemeStore = create((set, get) => {
-  const stored = getStoredTheme();
-  const initial = stored || 'system';
-  // 初始应用（首次 FOUC 脚本已处理，这里补充同步）
-  applyTheme(initial);
+  const initialTheme = getStoredTheme();
 
-  // 如果用户未手动选择，监听系统主题变化
-  let mediaListener = null;
-  if (!stored) {
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaListener = (e) => {
-      // 仅在 system 模式下响应系统变化
+  // 初始化 DOM 主题挂载
+  applyTheme(initialTheme);
+
+  // 监听系统主题变化
+  if (typeof window !== 'undefined') {
+    const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQueryDark.addEventListener('change', () => {
       if (get().theme === 'system') {
         applyTheme('system');
       }
-    };
-    mq.addEventListener('change', mediaListener);
+    });
   }
 
   return {
-    theme: initial,
-    effectiveTheme: getEffectiveTheme(initial),
-    mediaListener,
+    theme: initialTheme,
 
-    setTheme: (theme) => {
+    setTheme: (mode) => {
       try {
-        localStorage.setItem(THEME_KEY, theme);
+        localStorage.setItem(THEME_KEY, mode);
       } catch {}
-      applyTheme(theme);
-
-      // 如果之前没监听，且现在选择了 system，添加监听
-      const state = get();
-      if (!state.mediaListener && theme === 'system') {
-        const mq = window.matchMedia('(prefers-color-scheme: dark)');
-        const listener = (e) => {
-          if (get().theme === 'system') {
-            applyTheme('system');
-          }
-        };
-        mq.addEventListener('change', listener);
-        set({ mediaListener: listener });
-      }
-      // 如果用户切换到了明确模式，移除监听
-      if (state.mediaListener && theme !== 'system') {
-        const mq = window.matchMedia('(prefers-color-scheme: dark)');
-        mq.removeEventListener('change', state.mediaListener);
-        set({ mediaListener: null });
-      }
-
-      set({ theme, effectiveTheme: getEffectiveTheme(theme) });
-    },
-
-    cycleTheme: () => {
-      const { theme } = get();
-      const next = theme === 'light' ? 'dark' : theme === 'dark' ? 'system' : 'light';
-      get().setTheme(next);
+      applyTheme(mode);
+      set({ theme: mode });
     },
   };
 });

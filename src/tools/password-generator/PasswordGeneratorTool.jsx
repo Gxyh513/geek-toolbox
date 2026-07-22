@@ -19,7 +19,7 @@ function generatePassword(length, options) {
   if (options.uppercase) pool += CHARS.uppercase;
   if (options.digits) pool += CHARS.digits;
   if (options.special) pool += CHARS.special;
-  if (!options.ambiguous) {
+  if (options.ambiguous) {
     for (const ch of CHARS.ambiguous) {
       pool = pool.replaceAll(ch, '');
     }
@@ -58,7 +58,7 @@ export default function PasswordGeneratorTool() {
     if (options.uppercase) poolSize += 26;
     if (options.digits) poolSize += 10;
     if (options.special) poolSize += CHARS.special.length;
-    if (!options.ambiguous) poolSize -= CHARS.ambiguous.length;
+    if (options.ambiguous) poolSize -= CHARS.ambiguous.length;
     const entropy = Math.round(length * Math.log2(Math.max(poolSize, 1)));
     if (entropy < 40) return { label: '弱', class: 'text-red-500', bar: 'w-1/3 bg-red-500' };
     if (entropy < 60) return { label: '一般', class: 'text-yellow-500', bar: 'w-2/3 bg-yellow-500' };
@@ -68,7 +68,7 @@ export default function PasswordGeneratorTool() {
 
   return (
     <ToolPageLayout toolId={TOOL_ID}>
-      <div className="space-y-4 max-w-4xl">
+      <div className="w-full flex-1 flex flex-col space-y-4 min-h-0">
         <div className="flex items-center gap-3">
           <label className="text-xs text-gray-500 dark:text-gray-500 whitespace-nowrap">密码长度</label>
           <input type="range" min={4} max={64} value={length}
@@ -111,7 +111,7 @@ export default function PasswordGeneratorTool() {
             {password.startsWith('请') ? (
               <span className="text-yellow-500 text-xs">{password}</span>
             ) : (
-              <pre className="whitespace-pre-wrap break-all font-mono text-lg tracking-wider select-all">{password}</pre>
+              <pre className="whitespace-pre-wrap break-all font-mono text-lg tracking-wider">{password}</pre>
             )}
           </div>
         </div>

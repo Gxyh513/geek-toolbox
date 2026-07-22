@@ -1,247 +1,128 @@
 import {
-  Hash,
   Lock,
   Type,
-  FileCode,
   Terminal,
-  Globe,
   Shuffle,
-  Clock,
-  Palette,
-  Wifi,
-  Code,
-  Braces,
-  KeyRound,
-  FileText,
-  ScanSearch,
-  ArrowLeftRight,
-  Image,
-  Shapes,
-  Smartphone,
-  ScanLine,
-  DollarSign,
   Eye,
-  PenTool,
+  ScanSearch,
+  FileText,
+  FileCode,
+  Image,
+  Zap,
+  FolderTree,
+  Code2,
+  ArrowLeftRight,
+  Clock,
 } from 'lucide-react';
 
 /**
- * 工具分类定义
+ * 规范化工具分类定义
  */
 export const CATEGORIES = [
-  { id: 'encode', label: '编码转换', icon: Code },
-  { id: 'crypto', label: '加密哈希', icon: Lock },
-  { id: 'text', label: '文本处理', icon: Type },
-  { id: 'time', label: '时间日期', icon: Clock },
-  { id: 'dev', label: '开发辅助', icon: Terminal },
-  { id: 'network', label: '网络相关', icon: Globe },
+  { id: 'elanguage', label: '易语言开发', icon: Code2 },
+  { id: 'crypto', label: '安全与密码', icon: Lock },
+  { id: 'text', label: '文本与处理', icon: Type },
+  { id: 'dev', label: '实用开发辅助', icon: Terminal },
 ];
 
 /**
- * 工具注册表
- * 每个工具包含：
- *   id        - 唯一标识，用于路由 `/tool/:id`
- *   category  - 所属分类 id
- *   name      - 显示名称
- *   aliases   - 搜索别名
- *   icon      - lucide 图标组件
- *   desc      - 简短描述
- *   component - 工具页面组件（懒加载路径）
+ * 规范化工具注册表
  */
 export const TOOLS = [
-  // ── 编码转换类 ──
+  // ── 易语言开发类 ──
   {
-    id: 'base64',
-    category: 'encode',
-    name: 'Base64 编解码',
-    aliases: ['base64', 'base64编码', 'base64解码', 'base64encode', 'base64decode'],
-    icon: FileCode,
-    desc: 'Base64 编码与解码，支持 UTF-8',
+    id: 'curl-to-e',
+    category: 'elanguage',
+    name: 'cURL / 抓包转易语言',
+    aliases: ['curl', 'curl转易语言', 'fiddler', 'reqable', '抓包', '易语言代码', '精易模块', 'zjson'],
+    icon: Zap,
+    desc: 'cURL、Fiddler、Reqable 抓包智能转易语言代码 & 参数明细拆解',
   },
   {
-    id: 'url-encode',
-    category: 'encode',
-    name: 'URL 编解码',
-    aliases: ['url编码', 'url解码', 'urlencode', 'urldecode', 'percent编码'],
-    icon: Globe,
-    desc: 'URL 参数编码与解码',
+    id: 'json-tree',
+    category: 'elanguage',
+    name: 'JSON 树形解析 & ZJSON',
+    aliases: ['json树', 'jsonpath', 'zjson', 'json树形解析', '易语言json', 'zjson取值'],
+    icon: FolderTree,
+    desc: 'JSON 树形节点解析、JSONPath 提取与 ZJSON 易语言代码生成',
   },
   {
-    id: 'json-formatter',
-    category: 'encode',
-    name: 'JSON 格式化',
-    aliases: ['json', 'json格式化', 'json压缩', 'json校验', 'json验证', 'json美化'],
-    icon: Braces,
-    desc: 'JSON 格式化、压缩与语法校验',
-  },
-  {
-    id: 'jwt-parser',
-    category: 'encode',
-    name: 'JWT 解析',
-    aliases: ['jwt', 'token解析', 'jwt解析', 'jwt解码'],
-    icon: KeyRound,
-    desc: '解析 JWT Token 的 Header、Payload',
-  },
-  {
-    id: 'unicode',
-    category: 'encode',
-    name: 'Unicode 转换',
-    aliases: ['unicode', '\\u编码', 'unicode转中文', '中文转unicode', 'escape'],
+    id: 'encode-e',
+    category: 'elanguage',
+    name: '多进制与编码转换',
+    aliases: ['编码', 'url编码', 'base64', 'unicode', 'hex', '16进制', '易语言编码'],
     icon: ArrowLeftRight,
-    desc: '中文与 \\uXXXX 互转',
+    desc: 'URL / Base64 / Unicode / Hex 16进制转换及易语言代码提示',
+  },
+  {
+    id: 'crypto-e',
+    category: 'elanguage',
+    name: '加解密与哈希套件',
+    aliases: ['md5', 'sha1', 'sha256', 'hmac', 'aes', 'des', '3des', 'rc4', 'rabbit', '哈希', '加密'],
+    icon: Lock,
+    desc: 'MD5 16/32位、SHA全集、HMAC全集、AES/DES/3DES/RC4对称加解密',
+  },
+  {
+    id: 'timestamp-e',
+    category: 'elanguage',
+    name: 'Unix 时间戳转换',
+    aliases: ['时间戳', 'timestamp', '10位时间戳', '13位时间戳', '北京时间', 'unix时间'],
+    icon: Clock,
+    desc: '10位/13位 Unix 时间戳与北京时间实时双向转换',
   },
 
-  // ── 加密哈希类 ──
-  {
-    id: 'hash',
-    category: 'crypto',
-    name: '哈希计算',
-    aliases: ['md5', 'sha1', 'sha256', 'sha512', '哈希', 'hash', '摘要'],
-    icon: Hash,
-    desc: 'MD5 / SHA1 / SHA256 / SHA512 计算',
-  },
-  {
-    id: 'hmac',
-    category: 'crypto',
-    name: 'HMAC 生成',
-    aliases: ['hmac', 'hmac-md5', 'hmac-sha1', 'hmac-sha256', '消息认证码'],
-    icon: Lock,
-    desc: 'HMAC-MD5 / HMAC-SHA1 / HMAC-SHA256',
-  },
+  // ── 安全与密码类 ──
   {
     id: 'uuid-generator',
     category: 'crypto',
-    name: 'UUID 生成器',
+    name: 'UUID / GUID 生成器',
     aliases: ['uuid', 'guid', 'uuid生成', 'uuid v4', '随机id'],
     icon: Shuffle,
-    desc: '批量生成 UUID v4，支持大小写',
+    desc: '批量生成标准 UUID v4 / GUID，支持大小写与格式转换',
   },
   {
     id: 'password-generator',
     category: 'crypto',
-    name: '随机密码',
+    name: '强随机密码生成器',
     aliases: ['密码', '随机密码', '密码生成', 'password', '密码生成器'],
     icon: Eye,
-    desc: '可配置的强密码生成器',
+    desc: '可配置字符类型、长度与熵值强度的随机安全密码',
   },
 
-  // ── 文本处理类 ──
+  // ── 文本与处理类 ──
   {
     id: 'regex-tester',
     category: 'text',
-    name: '正则测试器',
+    name: '正则表达式测试器',
     aliases: ['正则', 'regex', '正则表达式', '正则测试', 'regexp', 're'],
     icon: ScanSearch,
-    desc: '正则表达式实时匹配测试，含常用速查表',
+    desc: '正则实时匹配高亮、捕获组拆解、文本替换与常用模板速查',
   },
   {
     id: 'text-diff',
     category: 'text',
-    name: '文本 Diff',
+    name: '文本差异对比 (Diff)',
     aliases: ['diff', '对比', '文本对比', '差异', '比较'],
     icon: FileText,
-    desc: '两段文本的差异对比',
-  },
-  {
-    id: 'case-converter',
-    category: 'text',
-    name: '大小写转换',
-    aliases: ['大小写', '驼峰', 'camelCase', 'snake_case', 'kebab-case', 'PascalCase'],
-    icon: PenTool,
-    desc: '驼峰/蛇形/中划线/大小写互转',
+    desc: '两段文本逐行/逐字差异对比与高亮分析',
   },
   {
     id: 'markdown-preview',
     category: 'text',
-    name: 'Markdown 预览',
+    name: 'Markdown 实时渲染',
     aliases: ['markdown', 'md', 'markdown预览', 'md预览', 'markdown渲染'],
     icon: FileCode,
-    desc: 'Markdown 实时渲染预览',
+    desc: 'Markdown 文本实时渲染预览与 HTML 输出',
   },
 
-  // ── 时间日期类 ──
-  {
-    id: 'timestamp',
-    category: 'time',
-    name: '时间戳转换',
-    aliases: ['时间戳', 'timestamp', 'unix时间', '日期转时间戳', '时间戳转日期'],
-    icon: Clock,
-    desc: 'Unix 时间戳与日期互相转换',
-  },
-  {
-    id: 'cron-parser',
-    category: 'time',
-    name: 'Cron 解析',
-    aliases: ['cron', '定时任务', 'cron表达式', 'crontab', '计划任务'],
-    icon: ScanLine,
-    desc: 'Cron 表达式解析与可读化',
-  },
-  {
-    id: 'timezone',
-    category: 'time',
-    name: '时区换算',
-    aliases: ['时区', 'timezone', '时区转换', '世界时间', 'UTC'],
-    icon: Globe,
-    desc: '多时区时间换算',
-  },
-
-  // ── 开发辅助类 ──
-  {
-    id: 'color-picker',
-    category: 'dev',
-    name: '颜色转换',
-    aliases: ['颜色', 'color', 'hex', 'rgb', 'hsl', '颜色选择', '颜色转换'],
-    icon: Palette,
-    desc: 'HEX / RGB / HSL 颜色格式互转与选色',
-  },
-  {
-    id: 'gradient-generator',
-    category: 'dev',
-    name: '渐变生成器',
-    aliases: ['渐变', 'gradient', 'css渐变', '线性渐变', '径向渐变', '背景渐变'],
-    icon: Shapes,
-    desc: 'CSS 线性/径向渐变可视化生成',
-  },
-  {
-    id: 'regex-visualizer',
-    category: 'dev',
-    name: '正则可视化',
-    aliases: ['正则可视化', 'regex可视化', '正则图', 'regexp可视化'],
-    icon: ScanSearch,
-    desc: '正则表达式结构可视化展示',
-  },
+  // ── 实用开发辅助类 ──
   {
     id: 'qrcode',
     category: 'dev',
-    name: '二维码',
+    name: '二维码生成与解码',
     aliases: ['二维码', 'qrcode', 'qr码', 'qr生成', 'qr解码', '扫码'],
     icon: Image,
-    desc: '二维码生成与解码',
-  },
-
-  // ── 网络相关类 ──
-  {
-    id: 'ip-lookup',
-    category: 'network',
-    name: 'IP 查询',
-    aliases: ['ip', 'ip查询', '我的ip', '本机ip', 'ip地址'],
-    icon: Wifi,
-    desc: '展示本机 IP 地址信息',
-  },
-  {
-    id: 'ua-parser',
-    category: 'network',
-    name: 'UA 解析',
-    aliases: ['ua', 'user-agent', 'useragent', '浏览器标识', '设备信息'],
-    icon: Smartphone,
-    desc: '解析 User-Agent 浏览器/设备信息',
-  },
-  {
-    id: 'dns-lookup',
-    category: 'network',
-    name: 'DNS 查询',
-    aliases: ['dns', '域名解析', 'nslookup', 'dig', '域名查询'],
-    icon: Globe,
-    desc: 'DNS 记录查询演示（纯前端模拟）',
+    desc: '二维码可视化生成、样式定制与图片扫码识别解码',
   },
 ];
 

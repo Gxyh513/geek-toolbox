@@ -12,6 +12,12 @@ export default {
         sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       colors: {
+        accent: {
+          DEFAULT: 'var(--color-accent, #3b82f6)',
+          hover: 'var(--color-accent-hover, #2563eb)',
+          light: 'var(--color-accent-light, #60a5fa)',
+          bg: 'var(--color-accent-bg, rgba(59, 130, 246, 0.1))',
+        },
         geek: {
           50: '#f0f6ff',
           100: '#e0edff',
